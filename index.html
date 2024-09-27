@@ -46,6 +46,81 @@
     <p>Powered by Firestore and Hosted on Netlify</p>
   </footer>
 
-  <script src="app.js"></script>
+  <!-- Firebase and Firestore -->
+  <script type="module">
+    // Import the Firebase SDK
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+
+    // Firebase configuration (your provided FirebaseConfig)
+    const firebaseConfig = {
+      apiKey: "AIzaSyAuTgdGmp96gPmQOBwU9CMByMZFqeUBNQI",
+      authDomain: "bookapp-c7a80.firebaseapp.com",
+      projectId: "bookapp-c7a80",
+      storageBucket: "bookapp-c7a80.appspot.com",
+      messagingSenderId: "496039537156",
+      appId: "1:496039537156:web:4a6d3c319b77207603e351"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+
+    // Initialize Firestore
+    const db = getFirestore(app);
+
+    // Reference to the 'books' collection in Firestore
+    const booksRef = collection(db, 'books');
+
+    // Fetch and display all books
+    const fetchBooks = async () => {
+      const booksContainer = document.getElementById('books-container');
+      booksContainer.innerHTML = ''; // Clear previous books
+
+      const q = query(booksRef, orderBy('createdAt', 'desc'));
+      const querySnapshot = await getDocs(q);
+
+      querySnapshot.forEach(doc => {
+        const book = doc.data();
+        const bookElement = document.createElement('div');
+        bookElement.classList.add('book-item');
+        bookElement.innerHTML = `
+          <h3>${book.title}</h3>
+          <p><strong>Author:</strong> ${book.author}</p>
+          <p><strong>Genre:</strong> ${book.genre}</p>
+          <p><strong>Status:</strong> ${book.status}</p>
+        `;
+        booksContainer.appendChild(bookElement);
+      });
+    };
+
+    // Handle form submission to add a book
+    const bookForm = document.getElementById('book-form');
+    bookForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const title = document.getElementById('book-title').value;
+      const author = document.getElementById('book-author').value;
+      const genre = document.getElementById('book-genre').value;
+      const status = document.getElementById('book-status').value;
+
+      // Add a new book to Firestore
+      await addDoc(booksRef, {
+        title: title,
+        author: author,
+        genre: genre,
+        status: status,
+        createdAt: new Date()
+      });
+
+      // Reset the form
+      bookForm.reset();
+
+      // Refresh the book list
+      fetchBooks();
+    });
+
+    // Initial fetch of books on page load
+    fetchBooks();
+  </script>
 </body>
 </html>
