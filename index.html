@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book Tracker</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>My Personal Book Tracker</h1>
+    <p>Track what I've been reading and more!</p>
+  </header>
+
+  <section class="overview">
+    <h2>Overview</h2>
+    <div class="stats">
+      <div>Total Books: <span id="total-books">0</span></div>
+      <div>Books Read: <span id="books-read">0</span></div>
+      <div>Books Unread: <span id="books-unread">0</span></div>
+    </div>
+  </section>
+
+  <section class="add-book-form">
+    <h2>Add a New Book</h2>
+    <form id="book-form">
+      <input type="text" id="book-title" placeholder="Book Title" required />
+      <input type="text" id="book-author" placeholder="Author" required />
+      <input type="text" id="book-genre" placeholder="Genre" required />
+      <select id="book-status">
+        <option value="read">Read</option>
+        <option value="unread">Unread</option>
+      </select>
+      <button type="submit">Add Book</button>
+    </form>
+  </section>
+
+  <section class="book-list">
+    <h2>Book List</h2>
+    <div id="books-container" class="books-container">
+      <!-- Dynamically populated books -->
+    </div>
+  </section>
+
+  <footer>
+    <p>Powered by Firestore and Hosted on Netlify</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
